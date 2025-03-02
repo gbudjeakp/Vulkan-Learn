@@ -1,0 +1,19 @@
+{
+    "configurations": [
+        {
+            "name": "WSL",
+            "includePath": [
+                "/usr/include",  // Vulkan headers path in WSL
+                "${workspaceFolder}/**"
+            ],
+            "compilerPath": "/usr/bin/gcc",  // Use the GCC compiler inside WSL
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "intelliSenseMode": "linux-gcc-x64",  // Ensure Linux IntelliSense mode
+            "compilerArgs": [
+                "-I/usr/include"  // Include Vulkan headers
+            ]
+        }
+    ],
+    "version": 4
+}
