@@ -16,9 +16,10 @@ void createWindow()
 {
 
     glfwInit();
-    // We have to explicitly tell GLFW that we are using Vulkan
+    // We have to explicitly tell GLFW that we are using Vulkan else
+    // this would create an OpenGL context. 
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-    window = glfwCreateWindow(WIDTH, HEIGHT, "Vulkan Demo", glfwGetPrimaryMonitor(), NULL);
+    window = glfwCreateWindow(WIDTH, HEIGHT, "Vulkan Demo", NULL, NULL);
 
     if (!window)
     {
