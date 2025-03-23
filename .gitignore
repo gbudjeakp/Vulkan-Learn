@@ -3,7 +3,6 @@
 /.vs/
 
 # Ignore CMakeSettings.json and CMakeLists
-CMakeLists.txt
 CMakeSettings.json
 
 
