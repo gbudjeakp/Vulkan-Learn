@@ -1,3 +1,11 @@
+# Ignore the 'out' and vs directory and everything inside it
+/out/
+/.vs/
+
+# Ignore CMakeSettings.json
+CMakeSettings.json
+
+
 # Prerequisites
 *.d
 

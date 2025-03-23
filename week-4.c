@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-GLFWwindow *window;
+GLFWwindow* window;
 VkInstance instance;
 VkSurfaceKHR surface;
 VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
@@ -12,7 +12,7 @@ VkDevice device;
 
 VkQueue graphicsQueue; // Logical device queue (added in createLogicalDevice).
 
-const char *validationLayers[] = {"VK_LAYER_KHRONOS_validation"};
+const char* validationLayers[] = { "VK_LAYER_KHRONOS_validation" };
 const int WIDTH = 800;
 const int HEIGHT = 600;
 
@@ -29,7 +29,7 @@ int isDeviceSuitable(VkPhysicalDevice device) {
     uint32_t queueFamilyCount = 0;
     vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, NULL);
 
-    VkQueueFamilyProperties queueFamilies[queueFamilyCount];
+    VkQueueFamilyProperties* queueFamilies = malloc(queueFamilyCount * sizeof(VkQueueFamilyProperties));
     vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, queueFamilies);
 
     int hasGraphicsQueue = 0;
@@ -40,6 +40,7 @@ int isDeviceSuitable(VkPhysicalDevice device) {
         }
     }
 
+    free(queueFamilies);
     return deviceProperties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU && hasGraphicsQueue;
 }
 
@@ -53,7 +54,7 @@ void pickPhysicalDevice() {
         exit(1);
     }
 
-    VkPhysicalDevice devices[deviceCount];
+    VkPhysicalDevice* devices = malloc(deviceCount * sizeof(VkPhysicalDevice));
     vkEnumeratePhysicalDevices(instance, &deviceCount, devices);
 
     for (uint32_t i = 0; i < deviceCount; i++) {
@@ -62,6 +63,8 @@ void pickPhysicalDevice() {
             break;
         }
     }
+
+    free(devices);
 
     if (physicalDevice == VK_NULL_HANDLE) {
         printf("No suitable GPU found!\n");
@@ -77,7 +80,7 @@ void createLogicalDevice() {
     uint32_t queueFamilyCount = 0;
     vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyCount, NULL);
 
-    VkQueueFamilyProperties queueFamilies[queueFamilyCount];
+    VkQueueFamilyProperties* queueFamilies = malloc(queueFamilyCount * sizeof(VkQueueFamilyProperties));
     vkGetPhysicalDeviceQueueFamilyProperties(physicalDevice, &queueFamilyCount, queueFamilies);
 
     int graphicsFamilyIndex = -1;
@@ -87,6 +90,8 @@ void createLogicalDevice() {
             break;
         }
     }
+
+    free(queueFamilies);
 
     if (graphicsFamilyIndex == -1) {
         printf("Failed to find a graphics queue family!\n");
@@ -127,7 +132,7 @@ int checkValidationLayerSupport() {
     uint32_t layerCount;
     vkEnumerateInstanceLayerProperties(&layerCount, NULL);
 
-    VkLayerProperties availableLayers[layerCount];
+    VkLayerProperties* availableLayers = malloc(layerCount * sizeof(VkLayerProperties));
     vkEnumerateInstanceLayerProperties(&layerCount, availableLayers);
 
     for (int i = 0; i < 1; i++) { // We only have one layer in validationLayers[]
@@ -141,10 +146,12 @@ int checkValidationLayerSupport() {
         }
 
         if (!layerFound) {
+            free(availableLayers);
             return 0;
         }
     }
 
+    free(availableLayers);
     return 1;
 }
 
@@ -184,7 +191,7 @@ void createInstance() {
     }
 
     uint32_t glfwExtensionCount = 0;
-    const char **glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
+    const char** glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
 
     VkInstanceCreateInfo createInfo = {};
     createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
