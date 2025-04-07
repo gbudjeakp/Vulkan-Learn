@@ -1,9 +1,8 @@
-# Ignore the 'out' and vs directory and everything inside it
-/out/
-/.vs/
+# Ignore vs directory and everything inside it
+/.vscode/*
 
-# Ignore CMakeSettings.json and CMakeLists
-CMakeSettings.json
+# Ignore compiled binaries
+/build/*
 
 
 # Prerequisites
